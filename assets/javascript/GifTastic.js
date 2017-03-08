@@ -33,11 +33,15 @@ $(document).on('click', '.gameButton', function(){
 
 })
 
+$(document).on('click', gifImg, function(){
+	this.toggle('data-state');
+})
+
 function getGifs(buttonVal){
 	console.log('printing button value: ' + buttonVal);
 
 	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-	     			buttonVal + "&api_key=dc6zaTOxFJmzC&limit=10";
+	     			buttonVal + "&api_key=dc6zaTOxFJmzC&limit=5";
 
  	$.ajax({
       	url: queryURL,
@@ -50,11 +54,11 @@ function getGifs(buttonVal){
       	for (var i = 0; i < giphys.length; i++) {
 
       		if (giphys[i].rating !== "r") {
-      			var gifDiv = $("<div class='item'>");
+      			var gifDiv = $("<div class='col-sm-2'>");
 
-      			var gifImg = $("<img>").attr({
+      			var gifImg = $("<img class='col-lg-12'>").attr({
       				"data-state": "still",
-      				src: giphys[i].images.fixed_height_still.url,
+      				'src': giphys[i].images.fixed_height_still.url,
       				"data-animate":  giphys[i].images.fixed_height.url,
       				"data-still": giphys[i].images.fixed_height_still.url
       			});

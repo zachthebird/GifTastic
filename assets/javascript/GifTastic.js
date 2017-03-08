@@ -1,34 +1,50 @@
 var topics = ['meatballs', 'pianos', 'gum'];
 
-$(document).on('click', 'submit', function(){
+$(document).on('click', '#submit', function(){
 	topics.push(document.getElementById("addTopic").value);
+	console.log(topics);
+	createButtons();
+	return false;
 })
 
 function createButtons() {
+		$('#topicButtons').empty();
 		for (var i = 0; i < topics.length; i++) {
 			var gifSpace = $("<button/>").attr({
 				type: "button",
 				name: "btn_"+i,
-				id: "gameButton",
-				class: "btn btn-default"
+				id: 'btn_'+ i,
+				class: "gameButton btn btn-default"
 			});
 			$(gifSpace).text(topics[i]);
 			$("#topicButtons").append(gifSpace);
 		}
+		$('#addTopic').val('');
 }
 
 createButtons();
 
-// for(i=0; i<topics.length; i++){
-var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
-      topics + "&api_key=dc6zaTOxFJmzC&limit=10";
 
-      $.ajax({
+$(document).on('click', '.gameButton', function(){
+	console.log(this.innerHTML);
+	//get gifs from giphy
+	getGifs(this.innerHTML);
+	//add gif from giphy to the #topics div
+
+})
+
+function getGifs(buttonVal){
+	console.log('printing button value: ' + buttonVal);
+
+	var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
+	     			buttonVal + "&api_key=dc6zaTOxFJmzC&limit=10";
+
+ 	$.ajax({
       	url: queryURL,
       	method: "GET"
-      })
-      .done(function(snap) {
-
+    })
+    .done(function(snap) {
+    	console.log(snap);
       	var giphys = snap.data;
 
       	for (var i = 0; i < giphys.length; i++) {
@@ -45,7 +61,8 @@ var queryURL = "https://api.giphy.com/v1/gifs/search?q=" +
 
       			gifDiv.append(gifImg);
 
-      			$("topics").append(gifDiv);
+      			$("#topics").append(gifDiv);
       		}
       	}
     })
+}
